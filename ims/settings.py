@@ -28,9 +28,11 @@ SECRET_KEY = "czif=j6p5yagrslg#(1axv35%#-+_x02fff=kzg06r3lc*8i*9"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "*"
+]  # in production, this should be the domain name of the server or the IP address of the server
 AUTH_USER_MODEL = "members.Members"
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True  # in production, this should be False
 # Application definition
 
 INSTALLED_APPS = [
@@ -101,12 +103,28 @@ WSGI_APPLICATION = "ims.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+## Sqlite3 for development
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+## Uncomment the following lines if you are using postgresql
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": os.environ.get("POSTGRES_NAME"),
+#         "USER": os.environ.get("POSTGRES_USER"),
+#         "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+#         "HOST": "db",
+#         "PORT": "5432",
+
+#     }
+# }
 
 ADMIN_REORDER = (
     {"app": "admin_interface", "label": "Admin Interface"},
@@ -181,9 +199,23 @@ STATIC_URL = "/static/"
 
 STASTATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
-DEBUG = True
 
 CRONJOBS = [
     ## Every day at 4:00 a.m maintenance check
     ("* 4 * * *", "django.core.management.call_command", ["check_maintenance"]),
 ]
+
+## Security settings
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    X_FRAME_OPTIONS = "DENY"
+    ALLOWED_HOSTS = ["*"]

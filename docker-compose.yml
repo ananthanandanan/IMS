@@ -1,12 +1,40 @@
 version: '3.8'
 
 services:
+  db:
+    container_name: db
+    image: postgres:latest
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB= ${POSTGRES_DB}
+      - POSTGRES_USER= ${POSTGRES_USER}
+      - POSTGRES_PASSWORD= ${POSTGRES_PASSWORD}
+    restart: always
+    networks:
+      - main
+  
   web:
     container_name: django
     build:
       context: .
-    # command: python3 manage.py runserver 0.0.0.0:8000
+      dockerfile: Dockerfile
     volumes:
       - .:/usr/app
     ports:
       - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_NAME= ${POSTGRES_DB}
+      - POSTGRES_USER= ${POSTGRES_USER}
+      - POSTGRES_PASSWORD= ${POSTGRES_PASSWORD}
+    restart: always
+    networks:
+      - main
+
+  
+volumes:
+  db_data:
+networks:
+  main:
