@@ -17,7 +17,14 @@ from .forms import (
     ActivityFilter,
     EditProfile,
 )
-from .utils import get_ip_address, ticketData, tableData, buildingWiseData, departmentPrice, itemWisedata
+from .utils import (
+    get_ip_address,
+    ticketData,
+    tableData,
+    buildingWiseData,
+    departmentPrice,
+    itemWisedata,
+)
 from userlog.models import UserLog
 from buildings.models import Assignee
 
@@ -416,7 +423,7 @@ def create_ticket(request):
 
 
 @login_required(login_url="login")
-def activityCreation(request,ticket_no):
+def activityCreation(request, ticket_no):
     """Activity Creation Form
 
     Args:
@@ -430,9 +437,11 @@ def activityCreation(request,ticket_no):
         Activity, ItemSwap, fields="__all__", extra=0, can_delete=False
     )
     agent = Members.objects.get(email=request.user.email)
-    ticket= Ticket.objects.get(ticket_no=ticket_no)
+    ticket = Ticket.objects.get(ticket_no=ticket_no)
     if request.method == "POST":
-        form = ActivityForm(request.POST or None, agent=agent, initial={'ticket':ticket})
+        form = ActivityForm(
+            request.POST or None, agent=agent, initial={"ticket": ticket}
+        )
         formset = ActivityFormSet(request.POST or None)
         if form.is_valid() and formset.is_valid():
             activity = form.save()
@@ -497,22 +506,6 @@ class buildingAPI(APIView):
 
         return Response(data)
 
-class departmentPriceAPI(APIView):
-    authentication_classes = []
-    permission_classes = []
-
-    def get(self, request, format=None):
-        data = departmentPrice()
-
-        return Response(data)
-class itemPriceAPI(APIView):
-    authentication_classes = []
-    permission_classes = []
-
-    def get(self, request, format=None):
-        data = itemWisedata()
-
-        return Response(data)
 
 class departmentPriceAPI(APIView):
     authentication_classes = []
@@ -522,6 +515,8 @@ class departmentPriceAPI(APIView):
         data = departmentPrice()
 
         return Response(data)
+
+
 class itemPriceAPI(APIView):
     authentication_classes = []
     permission_classes = []
@@ -530,6 +525,28 @@ class itemPriceAPI(APIView):
         data = itemWisedata()
 
         return Response(data)
+
+
+class departmentPriceAPI(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request, format=None):
+        data = departmentPrice()
+
+        return Response(data)
+
+
+class itemPriceAPI(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request, format=None):
+        data = itemWisedata()
+
+        return Response(data)
+
+
 def report(request):
     """report page
 

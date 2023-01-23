@@ -28,7 +28,7 @@ SECRET_KEY = "czif=j6p5yagrslg#(1axv35%#-+_x02fff=kzg06r3lc*8i*9"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 AUTH_USER_MODEL = "members.Members"
 CORS_ALLOW_ALL_ORIGINS = True
 # Application definition

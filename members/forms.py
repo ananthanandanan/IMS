@@ -159,11 +159,12 @@ class ActivityForm(ModelForm):
         model = Activity
         fields = ["ticket", "comments"]
 
-    ticket= forms.ModelChoiceField(
+    ticket = forms.ModelChoiceField(
         queryset=Ticket.objects.all(),
         widget=forms.HiddenInput(),
         disabled=True,
     )
+
 
 class ActivityFilter(django_filters.FilterSet):
     ticket = django_filters.ModelChoiceFilter(

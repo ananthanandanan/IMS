@@ -177,7 +177,7 @@ class Assignee(models.Model):
 
 class Ticket(models.Model):
     ticket_no = models.UUIDField(default=uuid.uuid4, editable=False)
-    creator_name= models.CharField(max_length=50, blank=True, null=True)
+    creator_name = models.CharField(max_length=50, blank=True, null=True)
     department = models.ManyToManyField(
         Department, related_name="ticket_department", blank=True
     )

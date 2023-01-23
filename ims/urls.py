@@ -32,7 +32,7 @@ urlpatterns = [
     path("table_api", views.tableAPI.as_view()),
     path("buildingWise_api", views.buildingAPI.as_view()),
     path("itemWise_api", views.departmentPriceAPI.as_view()),
-    path("itemPrice_api",views.itemPriceAPI.as_view()),
+    path("itemPrice_api", views.itemPriceAPI.as_view()),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

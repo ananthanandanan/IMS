@@ -31,7 +31,8 @@ class RoomSerializer(serializers.ModelSerializer):
         model = Room
         fields = ("id", "room_no", "floor", "room_type", "items")
 
+
 class AssigneeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assignee
-        fields = ("id", "agent","status" ,"is_assigned", "assigned_at")
+        fields = ("id", "agent", "status", "is_assigned", "assigned_at")

@@ -8,9 +8,9 @@ An Inventory Management System(IMS) is the tool that provides user the ability t
 
 - Fork and clone the project,  and add a upstream remote to track main repo changes
  ```
-        $ git clone git@github.com:{username}/IMS.git
+        $ git clone git@gitlab.com:{username}/cms.git
         $ cd IMS
-        $ git remote add upstream git@github.com:Harikrishna-AL/IMS.git
+        $ git remote add upstream git@gitlab.com:amfoss/amfoss/ims.git
 ```
 
 Create a python 3 virtualenv, and activate the environment.
