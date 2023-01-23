@@ -1,0 +1,23 @@
+# .gitlab-ci.yml
+
+image: python:3.9
+
+stages:
+  - test
+  - lint
+
+test:
+  stage: test
+  script:
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install -r requirements.txt
+    - python manage.py test
+
+lint:
+  stage: lint
+  script:
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install -r requirements.txt
+    - black --check .
