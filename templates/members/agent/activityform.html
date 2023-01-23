@@ -1,0 +1,100 @@
+{% extends 'base.html' %} {% block content%}
+
+<style>
+  .hidden-item {
+    display: none;
+  }
+</style>
+<div class="back">
+  <div class="container">
+    {% if form.errors %}
+
+    <div class="container">
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        There was some error with your form. Please check the fields below.
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="app-content">
+  <div class="app-content-header">
+    <h1 class="app-content-headerText">Activity Creation</h1>
+  </div>
+
+  <div class="div-center" style="padding-top: 50px">
+    <div class="content">
+      <form action="" method="POST">
+        {% csrf_token %} {{ formset.management_form }}
+        <div class="text-white">{{ form.as_p }}</div>
+        {% if formset %}
+        <div id="items-list" class="d-flex flex-column p-2">
+          {% for form in formset %}
+          <div class="formset-items d-flex flex-row align-items-center">
+            <div class="formset-item text-white">{{ form }}</div>
+            <button
+              class="btn btn-danger text-white"
+              type="button"
+              style="margin-left: 10px"
+            >
+              Remove
+            </button>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <br />
+        <div id="empty-form" class="hidden-item">{{ formset.empty_form }}</div>
+        <button class="btn btn-success text-white" id="add-item" type="button">
+          Add item
+        </button>
+        <br />
+        <br />
+        <input type="submit" class="btn btn-primary" value="Create Activity" />
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const totalNewForms = document.getElementById("id_itemswap_set-TOTAL_FORMS");
+  const addBtn = document.getElementById("add-item");
+
+  addBtn.addEventListener("click", (event) => {
+    if (event) {
+      event.preventDefault();
+    }
+    /* Make dynamic formset item
+        1. Get the current formset item forms
+        2. Get the current form count
+        3. Get the items list target
+        4. Get the empty form
+        5. Set the class and id of the empty form
+        6. Replace the __prefix__ with the current form count
+        7. Set the total new forms value to the current form count + 1
+        8. Append the empty form to the items list target 
+    */
+    const currentItemForms = document.getElementsByClassName("formset-item");
+    let currentFormCount = currentItemForms.length;
+    const itemsListTarget = document.getElementById("items-list");
+    const CopyEmptyForm = document.getElementById("empty-form").cloneNode(true);
+    CopyEmptyForm.setAttribute("class", "formset-item text-white p-2");
+    CopyEmptyForm.setAttribute("id", `id_itemswap_set-${currentFormCount}`);
+    const regex = RegExp("__prefix__", "g");
+    CopyEmptyForm.innerHTML = CopyEmptyForm.innerHTML.replace(
+      regex,
+      currentFormCount
+    );
+    totalNewForms.setAttribute("value", currentFormCount + 1);
+    itemsListTarget.append(CopyEmptyForm);
+  });
+</script>
+
+{% endblock %}

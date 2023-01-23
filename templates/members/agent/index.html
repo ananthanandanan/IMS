@@ -1,0 +1,221 @@
+{% extends 'base.html' %} {% block content%} {% load mathfilters %}
+<div class="app-content">
+  <div class="app-content-header">
+    <h1 class="app-content-headerText">Tickets</h1>
+    <div class="Username">
+      <h4 style="color: #fff">{{ user}}</h4>
+    </div>
+  </div>
+  <div class="app-content-actions">
+    <div class="text-white px-2 filter-row">
+      <form method="GET" class="form-row align-items-center">
+        {{ticketFilter.form}}
+        <button class="btn btn-primary" type="submit">Search</button>
+      </form>
+    </div>
+    <div class="app-content-actions-wrapper">
+      <div class="filter-button-wrapper">
+        <div class="filter-menu">
+          <label>Category</label>
+          <select>
+            <option>All Categories</option>
+            <option>Electrical</option>
+            <option>Decoration</option>
+            <option>Kitchen</option>
+            <option>Bathroom</option>
+          </select>
+          <label>Status</label>
+          <select>
+            <option>All Status</option>
+            <option>Active</option>
+            <option>Disabled</option>
+          </select>
+          <div class="filter-menu-buttons">
+            <button class="filter-button reset">Reset</button>
+            <button class="filter-button apply">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="products-area-wrapper tableView">
+    <div class="products-header">
+      <div class="product-cell id">
+        Ticket-ID
+        <button class="sort-button">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="currentColor"
+              d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <div class="product-cell category">
+        Department<button class="sort-button">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="currentColor"
+              d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
+            />
+          </svg>
+        </button>
+      </div>
+      <div class="product-cell status-cell">
+        Date Published<button class="sort-button">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="currentColor"
+              d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <div class="product-cell price">
+        Room Type<button class="sort-button">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="currentColor"
+              d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
+            />
+          </svg>
+        </button>
+      </div>
+      <div class="product-cell info">Info</div>
+    </div>
+
+    {% for ticket in tickets_p %}
+    
+    <div class="products-row">
+      <div class="product-cell name">
+        <span class="cell-label">Ticket-ID:</span>
+        {{ticket.id}}
+      </div>
+
+      <div
+      class="product-cell category"
+      id="dept_names"
+      title="{% for department in ticket.department.all %}{{ department }},{% endfor %}"
+    >
+      {% if ticket.department.all.count > 1 and ticket.department.all.count < 3 %}
+
+      <span class="department active">
+        {{ ticket.department.first }} + {{ ticket.department.count|sub:1 }}
+      </span>
+
+      {% elif ticket.department.all.count > 2 %}
+      <span class="department active">
+        {{ ticket.department.first }} + {{ ticket.department.count|sub:1 }}
+      </span>
+
+      {% else %} {% for department in ticket.department.all %}
+      <span class="department active"> {{ department }} </span>
+      {% endfor %} {% endif %}
+    </div>
+      <div class="product-cell status-cell">
+        <span class="cell-label">Published</span>
+        <span class="status active">{{ ticket.created_at}}</span>
+      </div>
+      <div class="product-cell room">
+        <span class="cell-label">Room Type:</span>
+        <span class="category active" style="padding-right: 70px"
+          >{{ ticket.room.room_type }}</span
+        >
+      </div>
+      <div class="product-cell info">
+        <a
+          class="btn btn-primary btn-sm"
+          href="{% url 'detail_ticket' ticket_id=ticket.id %}"
+          role="button"
+          >More details</a
+        >
+      </div>
+    </div>
+
+    {% endfor %}
+  </div>
+
+  <div class="footer">
+    <nav aria-label="... ">
+      <ul class="pagination">
+        {% if tickets_p.has_previous %}
+
+        <li class="page-item">
+          <a class="page-link" href="?page=1">&laquo First</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{tickets_p.previous_page_number}}"
+            >Previous</a
+          >
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#">&laquo First</a>
+        </li>
+        <li class="page-item disabled">
+          <a class="page-link" href="#">Previous</a>
+        </li>
+        {% endif %} {% comment %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#">
+            Page {{activities.number}} of {{ activities.paginator.num_pages
+            }}</a
+          >
+        </li>
+        {% endcomment %} {% for i in tickets_p.paginator.page_range %} 
+        {% if tickets_p.number == i %}
+        <li class="active">
+          <a class="page-link"
+            ><span>{{ i }} <span class="sr-only"></span></span
+          ></a>
+        </li>
+        {% else %}
+        <li><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+
+        {% endif %} {% endfor %} {% if tickets_p.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{tickets_p.next_page_number}}"
+            >Next</a
+          >
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{tickets_p.paginator.num_pages}}"
+            >Last &raquo</a
+          >
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#">Next</a>
+        </li>
+        <li class="page-item disabled">
+          <a class="page-link" href="#">Last &raquo</a>
+        </li>
+
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+{% endblock %}

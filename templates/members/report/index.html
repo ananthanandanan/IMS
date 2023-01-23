@@ -1,0 +1,584 @@
+{% extends 'base.html'%}
+
+
+
+{% block content %}
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- <link rel="stylesheet" href="index.css"> -->
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+<!--- Javascript library for excel file genration-->>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.5/xlsx.full.min.js"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<style>
+	body {
+		background: rgb(37, 43, 53);
+	}
+
+	h {
+		color: antiquewhite;
+	}
+
+	.flex-container {
+		display: flex;
+		width: 100%;
+		height: auto;
+		padding: 10px;
+		margin-bottom: auto;
+		justify-content: center;
+		/* background-color: rgb(182, 185, 216); */
+	}
+
+	.vertical-container {
+		display: flex;
+		width: 100%;
+		height: auto;
+		padding: 10px;
+		margin-bottom: auto;
+		justify-content: center;
+		flex-direction: column;
+	}
+
+	.container {
+		background-color: #31384d;
+		margin: 10px;
+		padding: 20px;
+		font-size: 30px;
+		border-radius: 20px;
+	}
+
+	canvas {
+		align-self: center;
+	}
+
+	.Test_DatetimeLocal {
+		align-self: center;
+		height: min-content;
+		width: min-content;
+	}
+
+	/* CSS */
+	.button-17 {
+		align-items: center;
+		appearance: none;
+		background-color: #fff;
+		border-radius: 24px;
+		border-style: none;
+		box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px, rgba(0, 0, 0, .14) 0 6px 10px 0, rgba(0, 0, 0, .12) 0 1px 18px 0;
+		box-sizing: border-box;
+		color: #3c4043;
+		cursor: pointer;
+		display: inline-flex;
+		fill: currentcolor;
+		font-family: "Google Sans", Roboto, Arial, sans-serif;
+		font-size: 14px;
+		font-weight: 500;
+		height: 48px;
+		justify-content: center;
+		letter-spacing: .25px;
+		line-height: normal;
+		max-width: 100%;
+		overflow: visible;
+		padding: 2px 24px;
+		position: relative;
+		text-align: center;
+		text-transform: none;
+		transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1), opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+		user-select: none;
+		-webkit-user-select: none;
+		touch-action: manipulation;
+		width: auto;
+		will-change: transform, opacity;
+		z-index: 0;
+	}
+
+	.button-17:hover {
+		background: #F6F9FE;
+		color: #174ea6;
+	}
+
+	.button-17:active {
+		box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
+		outline: none;
+	}
+
+	.button-17:focus {
+		outline: none;
+		border: 2px solid #4285f4;
+	}
+
+	.button-17:not(:disabled) {
+		box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+	}
+
+	.button-17:not(:disabled):hover {
+		box-shadow: rgba(60, 64, 67, .3) 0 2px 3px 0, rgba(60, 64, 67, .15) 0 6px 10px 4px;
+	}
+
+	.button-17:not(:disabled):focus {
+		box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+	}
+
+	.button-17:not(:disabled):active {
+		box-shadow: rgba(60, 64, 67, .3) 0 4px 4px 0, rgba(60, 64, 67, .15) 0 8px 12px 6px;
+	}
+
+	.button-17:disabled {
+		box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+	}
+</style>
+<div class="app-container">
+	<div class="vertical-container">
+		<div class="flex-container" style="justify-content: flex-start;">
+			<div class="container" style="height:35%; width:100%">
+				<h>IMS</h>
+
+			</div>
+			<div class="container" style="height:35%; width:100%">
+				<button class="button-17" onclick="buildingWiseData()">Building</button>
+				<button class="button-17" onclick="buttonDepartment()">Department</button>
+				<button class="button-17" onclick="">Items</button>
+
+			</div>
+			<div class="container" style="height:35%; width:100%">
+				<!-- <input type="datetime-local" class="Test_DatetimeLocal" style="background-color:#515d79; color: rgb(128, 184, 233);text-align: center;"> -->
+				<div style="align-self: center;">
+					<input type="date" id="meeting-time" name="meeting-time" value="2022-06-12">
+					<button class="button-17" onclick="buttonClick()">Submit</button>
+					<button class="button-17" onclick="Download()">Download</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="flex-container">
+
+			<div class="container" style="height:50vh; width:100%">
+				<div style="height:100%; width:100%; position: relative;">
+
+					<canvas id="myChartline"></canvas>
+				</div>
+
+			</div>
+			<div class="container" style="height:50vh; width:100%">
+				<div style="height:100%; width:100%">
+
+					<canvas id="myChartBar"></canvas>
+				</div>
+
+			</div>
+		</div>
+		<div class="flex-container" id="dropdown">
+			<select id="select" onchange="selectChange()">
+				
+			</select>
+		</div>
+		<div class="flex-container" id="table-container">
+			
+			<table class="table table-striped" id="table">
+				<tr class="bg-info" id="bg-info">
+
+				</tr>
+
+				<tbody id="myTable">
+
+				</tbody>
+			</table>
+			
+		</div>
+	</div>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+
+	function dateformat(date) {
+		var date = new Date(date);
+		var month = date.getMonth() + 1;
+		var day = date.getDate();
+		var year = date.getFullYear();
+		if (month < 10) month = "0" + month;
+		if (day < 10) day = "0" + day;
+		var newdate = day + "/" + month + "/" + year;
+		// console.log(newdate);
+		return newdate;
+
+	}
+	const dateControl = document.querySelector('input[type="date"]');
+	
+	console.log(text_dropdown);
+	function Download() {
+		var endpoint_table = "/table_api";
+		$.ajax({
+			method: "GET",
+			url: endpoint_table,
+			success: function (data) {
+				// This function takes in a JSON data object and a file name, and downloads the data as an Excel file
+				function downloadAsExcel(jsonData, fileName) {
+					var ws = XLSX.utils.json_to_sheet(jsonData);
+					var wb = XLSX.utils.book_new();
+					XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+					var data = XLSX.write(wb, { type: "array", bookType: "xlsx" });
+
+					var blob = new Blob([data], { type: "application/vnd.ms-excel" });
+
+					var link = document.createElement("a");
+					link.href = URL.createObjectURL(blob);
+					link.style = "visibility:hidden";
+					link.download = fileName + ".xlsx";
+
+					document.body.appendChild(link);
+					link.click();
+					document.body.removeChild(link);
+				}
+				downloadAsExcel(data[dateformat(dateControl.value)], dateformat(dateControl.value));
+			},
+		});
+	}
+
+
+	function buttonDepartment() {
+		var endpoint_table = "/table_api";
+		$.ajax({
+			method: "GET",
+			url: endpoint_table,
+			success: function (data) {
+				//console.log(data[dateformat(dateControl.value)][0].opened);
+				buildTable(data)
+
+
+
+				function buildTable(data) {
+					var table = document.getElementById('myTable');
+					var table_header = document.getElementById('bg-info');
+					var entire_table = document.getElementById('table')
+					entire_table.style.width = "100%";
+					table_header.innerHTML = `<th style="background-color: #2f3c46; color: #fff;">Department</th>
+											<th style="background-color: rgb(111, 144, 170); color: #fff;">Opened</th>
+											<th style="background-color: #2f3c46; color: #fff;">Closed</th>
+											<th style="background-color: rgb(111, 144, 170); color: #fff;">Service Time</th>
+											<th style="background-color: #2f3c46; color: #fff;">Response Time</th>
+											<th style="background-color: #2f3c46; color: #fff;">Price</th>`;
+
+					if (data?.[dateformat(dateControl.value)] == undefined) {
+						table.innerHTML = ``;
+
+
+					}
+					else {
+						table.innerHTML = ``;
+						for (var i = 0; i < data[dateformat(dateControl.value)].length; i++) {
+							var row = `<tr>
+							<td style="color:white;">${data[dateformat(dateControl.value)][i].department}</td>
+							<td style="color:white;">${data[dateformat(dateControl.value)][i].opened}</td>
+							<td style="color:white;">${data[dateformat(dateControl.value)][i].closed}</td>
+							<td style="color:white;">${data[dateformat(dateControl.value)][i].ServiceTime}</td>
+							<td style="color:white;">${data[dateformat(dateControl.value)][i].ResponseTime}</td>
+							<td style="color:white;">${data[dateformat(dateControl.value)][i].price}</td>
+							
+					  </tr>`
+							table.innerHTML += row
+
+
+						}
+					}
+
+				}
+			}
+		})
+
+	}
+	function buttonBuilding() {
+		var endpoint_building = '/buildingWise_api';
+		$.ajax({
+			method: "GET",
+			url: endpoint_building,
+			success: function (data) {
+				console.log(data);
+				buildTable(data)
+
+
+
+				function buildTable(data) {
+					var table = document.getElementById('myTable')
+					var table_header = document.getElementById('bg-info')
+					var entire_table = document.getElementById('table')
+					entire_table.style.width = "100%";
+					table_header.innerHTML = `<th style="background-color: #2f3c46; color: #fff;">Building</th>
+												<th style="background-color: #2f3c46; color: #fff;">Department</th>
+												<th style="background-color: rgb(111, 144, 170); color: #fff;">Opened</th>
+												<th style="background-color: #2f3c46; color: #fff;">Closed</th>
+												<th style="background-color: rgb(111, 144, 170); color: #fff;">Service Time</th>
+												<th style="background-color: #2f3c46; color: #fff;">Response Time</th>`;
+					if (data?.[dateformat(dateControl.value)] == undefined) {
+						table.innerHTML = ``;
+					}
+					else {
+						table.innerHTML = ``;
+						for (var i = 0; i < data[dateformat(dateControl.value)].length; i++) {
+							var row = `<tr>
+								<td style="color:white;">${data[dateformat(dateControl.value)][i].building}</td>
+								<td style="color:white;">${data[dateformat(dateControl.value)][i].department}</td>
+								<td style="color:white;">${data[dateformat(dateControl.value)][i].opened}</td>
+								<td style="color:white;">${data[dateformat(dateControl.value)][i].closed}</td>
+								<td style="color:white;">${data[dateformat(dateControl.value)][i].ServiceTime}</td>
+								<td style="color:white;">${data[dateformat(dateControl.value)][i].ResponseTime}</td>
+								
+						  </tr>`
+							table.innerHTML += row
+
+
+						}
+					}
+				}
+
+			}
+		})
+	}
+	function buildingWiseData() {
+		var endpoint = '/buildingWise_api';
+		$.ajax({
+			method: "GET",
+			url: endpoint,
+			success: function (data) {
+				console.log(data.buildings[0]);
+				buildTable(data)
+				function buildTable(data) {
+					var table = document.getElementById('myTable')
+					var table_header = document.getElementById('bg-info')
+					var entire_table = document.getElementById('table')
+					var dropdown = document.getElementById('select')
+					entire_table.style.width = "100%";
+					table_header.innerHTML = `
+												<th style="background-color: #2f3c46; color: #fff;">Department</th>
+												<th style="background-color: rgb(111, 144, 170); color: #fff;">Opened</th>
+												<th style="background-color: #2f3c46; color: #fff;">Closed</th>
+												<th style="background-color: rgb(111, 144, 170); color: #fff;">Service Time</th>
+												<th style="background-color: #2f3c46; color: #fff;">Response Time</th>
+												<th style="background-color: rgb(111, 144, 170); color: #fff;">Item</th>
+												<th style="background-color: #2f3c46; color: #fff;">Price</th>`;
+					if (data?.[dateformat(dateControl.value)] == undefined) {
+						table.innerHTML = ``;
+					}
+					else {
+						for (var k=0; k<data.buildings.length; k++){
+							dropdown.innerHTML += `<option value="${data.buildings[k]}">${data.buildings[k]}</option>`
+						}
+						// dropdown.innerHTML = `<option value="All">All</option>`
+						const dropdownValControl = document.getElementById('select');
+						var dropdownVal = dropdownValControl.options[dropdownValControl.selectedIndex].text;
+						table.innerHTML = ``;
+						for (var i = 0; i < data[dateformat(dateControl.value)][dropdownVal].length; i++) {
+							if (data[dateformat(dateControl.value)][dropdownVal][i].items.length == 0) {
+								var row = `<tr>
+								
+								<td style="color:white;">${data[dateformat(dateControl.value)][dropdownVal][i].department}</td>
+								<td style="color:white;">${data[dateformat(dateControl.value)][dropdownVal][i].opened}</td>
+								<td style="color:white;">${data[dateformat(dateControl.value)][dropdownVal][i].closed}</td>
+								<td style="color:white;">0</td>
+								<td style="color:white;">0</td>
+								<td style="color:white;">None</td>
+								<td style="color:white;">0</td>
+								
+						  </tr>`
+								table.innerHTML += row
+							}
+							else{
+							for (var j = 0; j < data[dateformat(dateControl.value)][dropdownVal][i].items.length; j++) {
+								var row = `<tr>
+								
+								<td style="color:white;">${data[dateformat(dateControl.value)][dropdownVal][i].department}</td>
+								<td style="color:white;">${data[dateformat(dateControl.value)][dropdownVal][i].opened}</td>
+								<td style="color:white;">${data[dateformat(dateControl.value)][dropdownVal][i].closed}</td>
+								<td style="color:white;">${data[dateformat(dateControl.value)][dropdownVal][i].ServiceTime}</td>
+								<td style="color:white;">${data[dateformat(dateControl.value)][dropdownVal][i].ResponseTime}</td>
+								<td style="color:white;">${data[dateformat(dateControl.value)][dropdownVal][i].items[j]}</td>
+								<td style="color:white;">${data[dateformat(dateControl.value)][dropdownVal][i].price[j]}</td>
+								
+								
+						  </tr>`
+								table.innerHTML += row
+							}}
+						// 	var row = `<tr>
+						// 		<td style="color:white;">${data[dateformat(dateControl.value)][i].building}</td>
+						// 		<td style="color:white;">${data[dateformat(dateControl.value)][i].department}</td>
+						// 		<td style="color:white;">${data[dateformat(dateControl.value)][i].opened}</td>
+						// 		<td style="color:white;">${data[dateformat(dateControl.value)][i].closed}</td>
+						// 		<td style="color:white;">0</td>
+						// 		<td style="color:white;">0</td>
+								
+						//   </tr>`
+						// 	table.innerHTML += row
+
+						}
+					}
+				}
+			}
+		})
+	}
+	function buttonClick() {
+		var endpoint_graph = '/graph_api';
+		buttonDepartment();
+		$.ajax({
+			method: "GET",
+			url: endpoint_graph,
+			success: function (data) {
+				if (data[dateformat(dateControl.value)] == undefined) {
+					const tempData = {
+						"labels": ['1', '2', '3'],
+						'chartLabel': 'Ticket',
+						'chartdata': [0, 0, 0],
+					}
+					drawBarGraph(tempData, 'myChartBar');
+					drawLineGraph(tempData, 'myChartline');
+				}
+				else {
+					drawLineGraph(data[dateformat(dateControl.value)], 'myChartline');
+					drawBarGraph(data[dateformat(dateControl.value)], 'myChartBar');
+				}
+			},
+			error: function (error_data) {
+				console.log(error_data);
+			}
+		})
+	}
+
+	function departmentPriceButton() {
+		var endpoint_graph = '/itemWise_api';
+		$.ajax({
+			method: "GET",
+			url: endpoint_graph,
+			success: function (data) {
+				var table = document.getElementById('myTable')
+				var table_header = document.getElementById('bg-info')
+				var entire_table = document.getElementById('table')
+				var container = document.getElementById('table-container')
+				entire_table.style.width = "50%";
+				table_header.innerHTML = `<th style="background-color: #2f3c46; color: #fff;">Department</th>
+												<th style="background-color: rgb(111, 144, 170); color: #fff;">Total Cost</th>`;
+				container.innerHTML += `<table class="table table-striped">
+											<tr class="bg-info" id="bg-info">
+
+											</tr>
+											<tbody id="itemTable">
+											<th style="background-color: #2f3c46; color: #fff;">Department</th>
+											<th style="background-color: rgb(111, 144, 170); color: #fff;">Total Cost</th>
+											</tbody>
+										</table>`;
+				var itemTable = document.getElementById('itemTable')
+				console.log(data[dateformat(dateControl.value)]);
+				if (data?.[dateformat(dateControl.value)] == undefined) {
+					table.innerHTML = ``;
+				}
+				else {
+					table.innerHTML = ``;
+					for (var i = 0; i < data[dateformat(dateControl.value)].length; i++) {
+						var row = `<tr>
+								<td style="color:white;">${data[dateformat(dateControl.value)][i].department}</td>
+								<td style="color:white;">${data[dateformat(dateControl.value)][i].price}</td>
+								
+						  </tr>`
+						table.innerHTML += row
+
+
+					}
+				}
+
+			},
+			error: function (error_data) {
+				console.log(error_data);
+			}
+		})
+	}
+
+	function drawLineGraph(data, id) {
+		var labels = data.labels;
+		var chartLabel = data.chartLabel;
+		var chartdata = data.chartdata;
+		var ctx = document.getElementById(id).getContext('2d');
+		var chart = new Chart(ctx, {
+			// The type of chart we want to create
+			type: 'line',
+
+			// The data for our dataset
+			data: {
+				labels: labels,
+				datasets: [{
+					label: chartLabel,
+					backgroundColor: 'rgb(55, 100, 200)',
+					borderColor: 'rgb(255, 255, 255)',
+					data: chartdata,
+				}]
+			},
+
+			// Configuration options go here
+			options: {
+				scales: {
+					xAxes: [{
+						display: true
+					}],
+					yAxes: [{
+						ticks: {
+							beginAtZero: true
+						}
+					}]
+				}
+			}
+
+		});
+	}
+
+	function drawBarGraph(data, id) {
+		var labels = data.labels;
+		var chartLabel = data.chartLabel;
+		var chartdata = data.chartdata;
+		var ctx = document.getElementById(id).getContext('2d');
+		var myChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: labels,
+				datasets: [{
+					label: chartLabel,
+					data: chartdata,
+					backgroundColor: [
+						'rgba(255, 99, 132, 0.5)',
+						'rgba(54, 162, 235, 0.5)',
+						'rgba(255, 206, 86, 0.5)',
+						'rgba(75, 192, 192, 0.5)',
+						'rgba(153, 102, 255, 0.5)',
+						'rgba(255, 159, 64, 0.5)'
+					],
+					borderColor: [
+						'rgba(255, 99, 132, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 206, 86, 1)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(153, 102, 255, 1)',
+						'rgba(255, 159, 64, 1)'
+					],
+					borderWidth: 1
+				}]
+			},
+			options: {
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero: true
+						}
+					}]
+				}
+			}
+		});
+	}
+</script>
+{% endblock %}

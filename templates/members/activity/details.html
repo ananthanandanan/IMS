@@ -1,0 +1,90 @@
+<!-- Modal -->
+
+{% extends 'base.html' %} {% block content %}
+
+<div class="app-content">
+  <div class="app-content-header">
+    <h1 class="app-content-headerText">Activity</h1>
+  </div>
+  <div class="app-content-actions">
+    <div class="app-content-actions-wrapper">
+      <div class="filter-button-wrapper">
+        
+        <div class="filter-menu">
+          <label>Category</label>
+          <select>
+            <option>All Categories</option>
+            <option>Electrical</option>
+            <option>Decoration</option>
+            <option>Kitchen</option>
+            <option>Bathroom</option>
+          </select>
+          <label>Status</label>
+          <select>
+            <option>All Status</option>
+            <option>Active</option>
+            <option>Disabled</option>
+          </select>
+          <div class="filter-menu-buttons">
+            <button class="filter-button reset">Reset</button>
+            <button class="filter-button apply">Apply</button>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <style>
+    .align {
+      text-align: center;
+    }
+    </style>
+  <div class="products-area-wrapper tableView">
+    <div class="products-header">
+      <div class="container my-3">
+        <h4 class="text-white">Activity-ID: {{activity_data.id}}</h4>
+        <ul
+          class="list-group list-group-flush"
+          style="background-color: #1d283c"
+        >
+          <li
+            class="list-group-item text-white"
+            style="background-color: #1d283c"
+          >
+            <b>Ticket: </b>
+            {{activity_data.ticket.id}}
+          </li>
+          
+          <li
+            class="list-group-item text-white"
+            style="background-color: #1d283c"
+          > 
+          <table>
+            <tr>
+              <th>Item</th>
+              <th>Count</th>
+            </tr>
+            {% for item in item_data %}
+            <tr>
+              <td> {{item.items}} </td>
+              <td class="align"> {{item.count}} </td>
+            </tr>
+            {% endfor %}
+          </table>
+            
+          </li>
+          
+          <li
+            class="list-group-item text-white"
+            style="background-color: #1d283c"
+          >
+            <b>Comments: </b>{{activity_data.comments}}
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%endblock%}

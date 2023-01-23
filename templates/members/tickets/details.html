@@ -1,0 +1,182 @@
+<!-- Modal -->
+
+{% extends 'base.html' %} {% block content %}
+
+<div class="app-content">
+  <div class="app-content-header">
+    <h1 class="app-content-headerText">Tickets</h1>
+  </div>
+  <div class="back">
+    <div class="container">
+      {% if messages %} {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{ message }}</strong>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endfor %} {% endif %}
+    </div>
+  </div>
+  <div class="app-content-actions">
+    <div class="app-content-actions-wrapper">
+      <div class="filter-button-wrapper">
+        <div class="filter-menu">
+          <label>Category</label>
+          <select>
+            <option>All Categories</option>
+            <option>Electrical</option>
+            <option>Decoration</option>
+            <option>Kitchen</option>
+            <option>Bathroom</option>
+          </select>
+          <label>Status</label>
+          <select>
+            <option>All Status</option>
+            <option>Active</option>
+            <option>Disabled</option>
+          </select>
+          <div class="filter-menu-buttons">
+            <button class="filter-button reset">Reset</button>
+            <button class="filter-button apply">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="products-area-wrapper tableView">
+    <div class="products-header">
+      <div class="container my-3">
+        <h4 class="text-white">Ticket-No: {{ticket_data.id}}</h4>
+
+        {% for assign in assigned_agent_data%}
+          {% if user.email in assign.agent_email and assign.is_assigned is True and assign.status == 'Pending' %}
+              <a style="position:absolute; right: 2rem;" href="{% url 'activitycreation' ticket_no=ticket_data.ticket_no %}" role="button">
+                <button class="btn btn-primary btn-sm">Add Activity</button>
+              </a>
+          {% endif %}
+        {% endfor %}   
+
+        {% for dep in ticket_data.department.all %}
+        <div class="product-cell status-cell">
+          <span class="status active">{{ dep}}</span>
+        </div>
+        {% endfor %}
+        <br />
+        <ul
+          class="list-group list-group-flush"
+          style="background-color: #1d283c"
+        >
+          <li
+            class="list-group-item text-white"
+            style="background-color: #1d283c"
+          >
+            Room: {{ticket_data.room.room_no}}
+          </li>
+          <li
+            class="list-group-item text-white"
+            style="background-color: #1d283c"
+          >
+            Room Type: {{ticket_data.room.room_type}}
+          </li>
+          <li
+            class="list-group-item text-white"
+            style="background-color: #1d283c"
+          >
+            Floor: {{ticket_data.room.floor.name}}
+          </li>
+          <li
+            class="list-group-item text-white"
+            style="background-color: #1d283c"
+          >
+            Block: {{ticket_data.room.floor.block.name}}
+          </li>
+          <li
+            class="list-group-item text-white"
+            style="background-color: #1d283c"
+          >
+            Building: {{ticket_data.room.floor.block.building.name}}
+          </li>
+          <li
+            class="list-group-item text-white"
+            style="background-color: #1d283c"
+          >
+            Message: {{ticket_data.message}}
+          </li>
+          <li
+            class="list-group-item text-white"
+            style="background-color: #1d283c"
+          >
+            Status: {{ticket_data.status}}
+          </li>
+          <li
+            class="list-group-item text-white"
+            style="background-color: #1d283c"
+          >
+            Created By: {{ticket_data.creator_name}}
+          </li>
+        </ul>
+        <br />
+        <!-- Assign to button -->
+        <div
+          class="d-flex flex-row flex-wrap align-content-start align-items-stretch px-3"
+        >
+          {% for assign in assigned_agent_data%} 
+            {% if assign.is_assigned is True %}
+
+          <div class="mx-3">
+            <p class="text-white px-1">{{assign.department}}</p>
+              {% if user.is_authenticated and not user.is_customer %} 
+          
+                {% if assign.status == 'Pending' %}
+            <a
+              class="btn btn-primary btn-sm m-2"
+              href="{% url 'assign_ticket' ticket_id=ticket_data.id department=assign.department %}"
+              role="button"
+              >unassign</a
+            >
+            {% else %}
+            <a class="btn btn-primary btn-sm m-2" role="button" style="background-color: green; cursor: default"
+              >Completed</a
+            >
+                {%endif%}
+                {% comment %} {%if .status == 'Completed' %} {% endcomment %}
+
+            
+            {% comment %} <a class="btn btn-primary btn-sm m-2" role="button" style="background-color: green; cursor: default"
+              >Completed</a
+            > {% endcomment %}
+                {% comment %} {% endif %} {% endcomment %}
+              {% endif%}
+            <p class="text-white">Assigned to {{assign.agent_email}} </p>
+          </div>
+          
+          {% else %}
+
+          <div class="mx-3">
+            <p class="text-white px-1">{{assign.department}}</p>
+            {% if user.is_authenticated and not user.is_customer %}
+
+            <a
+              class="btn btn-warning btn-sm m-2 px-3"
+              href="{% url 'assign_ticket' ticket_id=ticket_data.id department=assign.department %}"
+              role="button"
+              >assign</a
+            >
+            {% endif %}
+            <span class="text-white">No Agent Assigned </span>
+          </div>
+          {% endif %}
+        {% endfor %}
+        </div>
+
+        <!-- Assign to button -->
+      </div>
+    </div>
+  </div>
+</div>
+
+{%endblock%}

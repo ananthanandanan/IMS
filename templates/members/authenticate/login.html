@@ -1,0 +1,83 @@
+
+{% extends 'base.html' %}
+
+{% block  content%}
+
+<style>
+  .back {
+    background: #458bad;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+  }
+  
+  .div-center {
+    width: 400px;
+    height: 400px;
+    background-color: #101827;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: auto;
+    padding: 1em 2em;
+    border-radius: 25px;
+    display: table;
+  }
+  
+  div.content {
+    display: table-cell;
+    vertical-align: middle;
+  }
+</style>
+
+<div class="back">
+  
+  <div class="container">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>{{ message }}</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+  {% endif %}
+  </div> 
+
+  <div class="div-center">
+
+    <div class="content">
+
+
+      <h3 class="text-white" >Login</h3>
+      <hr />
+      <form  action="{% url 'login' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="text-white" for="exampleInputEmail1">Email address</label>
+          <input type="text" class="form-control" name="username" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <label class="text-white" for="exampleInputPassword1">Password</label>
+          <input type="password" class="form-control" name="password" placeholder="Password">
+        </div>
+        <br>
+        <input type="submit" class="btn btn-primary" value="Login">
+        <hr />
+        <button type="button" class="btn btn-link" onclick="location.href='{% url 'register' %}'">Register</button>
+        <button type="button" class="btn btn-link" onclick="location.href='{% url 'change_password' %}'" >Change Password</button>
+
+      </form>
+
+    </div>
+
+
+  </div>
+</div>
+
+{% endblock  %}
