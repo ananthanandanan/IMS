@@ -1,5 +1,6 @@
 FROM python:3.9-slim-buster
 
+# Install dependencies
 RUN apt-get update && apt-get install -y \ 
     libpq-dev \
     python3-dev \
@@ -11,6 +12,12 @@ RUN apt-get update && apt-get install -y \
 # Create the log file to be able to run tail
 RUN touch /var/log/cron.log
 
+# Test cron job
+# RUN crontab -l | { cat; echo "* * * * * echo 'Hello world' >> /var/log/cron.log 2>&1"; } | crontab -
+
+# Create static and media folders
+RUN mkdir -p /www/app/static && \
+    mkdir -p /www/app/media
 
 WORKDIR /usr/app
 
@@ -21,10 +28,7 @@ COPY requirements.txt /usr/app/requirements.txt
 RUN pip install --upgrade pip \
     && pip install -r /usr/app/requirements.txt
 
-# COPY . /usr/app
-
 ## entry point bash script
-
 COPY ./entrypoint.sh /usr/app/entrypoint.sh
 RUN chmod +x /usr/app/entrypoint.sh
 

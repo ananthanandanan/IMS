@@ -19,13 +19,13 @@ from collections import OrderedDict
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
+# Use these lines for production
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+# DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# Use this for development
 SECRET_KEY = "czif=j6p5yagrslg#(1axv35%#-+_x02fff=kzg06r3lc*8i*9"
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = [
@@ -33,6 +33,7 @@ ALLOWED_HOSTS = [
 ]  # in production, this should be the domain name of the server or the IP address of the server
 AUTH_USER_MODEL = "members.Members"
 CORS_ALLOW_ALL_ORIGINS = True  # in production, this should be False
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -64,8 +65,10 @@ APP_ORDER = [
     ("Departments"),
     ("Items"),
 ]
+
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
+
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -99,9 +102,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "ims.wsgi.application"
 
-
 # Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 ## Sqlite3 for development
 
@@ -112,19 +113,18 @@ DATABASES = {
     }
 }
 
-## Uncomment the following lines if you are using postgresql
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.environ.get("POSTGRES_NAME"),
-#         "USER": os.environ.get("POSTGRES_USER"),
-#         "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-#         "HOST": "db",
-#         "PORT": "5432",
-
-#     }
-# }
+## Postgres for production
+if not DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("POSTGRES_NAME"),
+            "USER": os.environ.get("POSTGRES_USER"),
+            "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+            "HOST": "db",
+            "PORT": "5432",
+        }
+    }
 
 ADMIN_REORDER = (
     {"app": "admin_interface", "label": "Admin Interface"},
@@ -151,7 +151,6 @@ ADMIN_REORDER = (
     },
 )
 # Password validation
-# https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -170,7 +169,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/3.1/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
 
@@ -184,15 +182,9 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-MEDIA_URL = "/logo/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "admin-interface/logo/")
-MEDIA_URL1 = "members/agent/"
-MEDIA_ROOT1 = os.path.join(BASE_DIR, "templates/agent/")
-
-MEDIA_URL2 = "members/customer/"
-MEDIA_ROOT2 = os.path.join(BASE_DIR, "templates/customer/")
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "images")
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
@@ -200,6 +192,10 @@ STATIC_URL = "/static/"
 STASTATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 
+## AUTO_FIELD settings
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+## Cron jobs for maintenance check
 CRONJOBS = [
     ## Every day at 4:00 a.m maintenance check
     ("* 4 * * *", "django.core.management.call_command", ["check_maintenance"]),
