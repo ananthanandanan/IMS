@@ -7,9 +7,9 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB= ${POSTGRES_DB}
-      - POSTGRES_USER= ${POSTGRES_USER}
-      - POSTGRES_PASSWORD= ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     restart: always
     networks:
       - main
@@ -26,9 +26,10 @@ services:
     depends_on:
       - db
     environment:
-      - POSTGRES_NAME= ${POSTGRES_DB}
-      - POSTGRES_USER= ${POSTGRES_USER}
-      - POSTGRES_PASSWORD= ${POSTGRES_PASSWORD}
+      DJANGO_NAME: ${DJANGO_NAME}
+      DJANGO_USER: ${DJANGO_USER}
+      DJANGO_PASSWORD: ${DJANGO_PASSWORD}
+
     restart: always
     networks:
       - main

@@ -34,4 +34,4 @@ typing_extensions==4.4.0
 tzdata==2022.7
 urllib3==1.26.12
 yarg==0.1.9
-# psycopg2==2.9.2 for postgres during production
+psycopg2==2.9.2
