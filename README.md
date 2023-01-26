@@ -1,69 +1,75 @@
-
-# IMS
+# IMS(Inventory Management System)
 
 An Inventory Management System(IMS) is the tool that provides user the ability to track Inventory of different infrastructures of an organisation.
 
+## Tech Stack
+
+- Django
+- Docker, Docker Compose
+- Postgres
+- Bootstrap/HTML/CSS
+- Redis
+- Huey
+
+## Features
+
+- [x] User Authentication
+- [x] User Registration
+- [x] Admin Dashboard
+  - [x] Add/Remove/Update Inventory
+  - [x] Add/Remove/Update Ticket
+  - [x] Add/Remove/Update Maintenance
+  - [x] Report Analytics Dashboard
+- [x] User Dashboard
+  - [x] View Ticket and Create Ticket
+- [x] Agent Dashboard
+  - [x] View Ticket and Assign Ticket
+  - [x] Create Activity Log
 
 ## Installation
 
-- Fork and clone the project,  and add a upstream remote to track main repo changes
- ```
-        $ git clone git@gitlab.com:{username}/cms.git
-        $ cd IMS
-        $ git remote add upstream git@gitlab.com:amfoss/amfoss/ims.git
+- Fork and clone the project, and add a upstream remote to track main repo changes
+
+```
+       $ git clone git@gitlab.com:{username}/cms.git
+       $ cd IMS
+       $ git remote add upstream git@gitlab.com:amfoss/amfoss/ims.git
 ```
 
-Create a python 3 virtualenv, and activate the environment.
-```bash
-        $ virtualenv venv
-        $ source bin/activate
-        
-```
+- Create a `.env` file in the project root directory and add the following variables
 
-⛔️After installing new packages, update the requirements.txt file⛔️
-```bash
-        $ pip freeze > requirements.txt
 ```
-
-Install the project dependencies from `requirements.txt`
+DEBUG=True
+SECRET_KEY=secret
+POSTGRES_DB=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+DJANGO_NAME=postgres
+DJANGO_USER=postgres
+DJANGO_PASSWORD=postgres
 ```
-        $ pip install -r requirements.txt
-```
-
-## Setup
-
-* `python manage.py makemigrations` to commit the database version
-* `python manage.py migrate --run-syncdb` - set up database
-* `python manage.py loaddata data.json` - load dummy database
-* `python manage.py createsuperuser` - create admin user
-* `python manage.py runserver`  - run the project locally
 
 ## Docker Setup
 
-* `docker-compose up -d --build` - build and run the project locally
-* `docker-compose exec web python3 manage.py makemigrations` to commit the database version
-* `docker-compose exec web python3 manage.py migrate --run-syncdb` - set up database
-* `docker-compose exec web python3 manage.py createsuperuser` - create admin user
-* `docker-compose exec web python3 manage.py runserver`  - run the project locally
+- Install docker and docker-compose
+- To run the project locally, run the following commands
 
-To add the django crontab, run the following command
-```
-    $ docker-compose exec web python3 manage.py crontab add
-```
-To remove the django crontab, run the following command
-```
-    $ docker-compose exec web python3 manage.py crontab remove
-```
-To view the django crontab, run the following command
-```
-    $ docker-compose exec web python3 manage.py crontab show
-```
+* `docker-compose up -d --build` - build and run the project locally
+* `docker-compose exec web python3 manage.py createsuperuser` - create admin user
 
 For removing the docker containers, run the following command
+
 ```
     $ docker-compose down
 ```
 
+- To remove all docker images, and volumes, run the following command
+
+```
+    $ docker system prune -a --volumes
+```
+
+- This will reset the database, and remove all the docker images and volumes.
 
 ## Development
 
@@ -81,6 +87,3 @@ For removing the docker containers, run the following command
 - Use `black` for formatting the code.
 - `black` is already installed in the project dependencies.
 - To format the code, run `black .` in the project root directory.
-
-
-
