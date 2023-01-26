@@ -14,6 +14,15 @@ services:
     networks:
       - main
   
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    restart: always
+    networks:
+      - main
+  
   web:
     container_name: django
     build:
@@ -25,11 +34,30 @@ services:
       - "8000:8000"
     depends_on:
       - db
+      - redis
     environment:
       DJANGO_NAME: ${DJANGO_NAME}
       DJANGO_USER: ${DJANGO_USER}
       DJANGO_PASSWORD: ${DJANGO_PASSWORD}
 
+    restart: always
+    networks:
+      - main
+  
+  huey:
+    container_name: huey
+    build:
+      context: .
+      dockerfile: ./huey/Dockerfile
+    volumes:
+      - .:/usr/app
+    depends_on:
+      - redis
+    environment:
+      DJANGO_NAME: ${DJANGO_NAME}
+      DJANGO_USER: ${DJANGO_USER}
+      DJANGO_PASSWORD: ${DJANGO_PASSWORD}
+    command: python manage.py run_huey
     restart: always
     networks:
       - main

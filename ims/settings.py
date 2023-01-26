@@ -11,22 +11,23 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
+import logging
 
 from collections import OrderedDict
+import environ
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env()
+environ.Env.read_env()
 
-# Use these lines for production
-# SECRET_KEY = os.environ.get('SECRET_KEY')
-# DEBUG = bool(int(os.environ.get('DEBUG', 0)))
+SECRET_KEY = env.str(
+    "SECRET_KEY", default="czif=j6p5yagrslg#(1axv35%#-+_x02fff=kzg06r3lc*8i*9"
+)
 
-# Use this for development
-SECRET_KEY = "czif=j6p5yagrslg#(1axv35%#-+_x02fff=kzg06r3lc*8i*9"
-
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=True)
 
 ALLOWED_HOSTS = [
     "*"
@@ -51,8 +52,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "huey.contrib.djhuey",  # <--- huey task queue for background tasks
     "easy_select2",
-    "django_crontab",
     "django_filters",
     "crispy_forms",
     "userlog",
@@ -104,27 +105,19 @@ WSGI_APPLICATION = "ims.wsgi.application"
 
 # Database
 
-## Sqlite3 for development
+## Postgres Database
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env.str("DJANGO_NAME", default=""),
+        "USER": env.str("DJANGO_USER", default=""),
+        "PASSWORD": env.str("DJANGO_PASSWORD", default=""),
+        "HOST": "db",
+        "PORT": "5432",
     }
 }
 
-## Postgres for production
-if not DEBUG:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ.get("DJANGO_NAME"),
-            "USER": os.environ.get("DJANGO_USER"),
-            "PASSWORD": os.environ.get("DJANGO_PASSWORD"),
-            "HOST": "db",
-            "PORT": "5432",
-        }
-    }
 
 ADMIN_REORDER = (
     {"app": "admin_interface", "label": "Admin Interface"},
@@ -192,14 +185,35 @@ STATIC_URL = "/static/"
 STASTATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 
+## Setup HUEY
+
+HUEY = {
+    "huey_class": "huey.RedisHuey",  # Huey implementation to use.
+    "name": env.str("DJANGO_NAME", default="ims"),  # Use db name as huey name
+    "connection": {
+        "host": "redis",
+        "port": 6379,
+    },  # Read timeout in seconds, use float for fractions of a second.
+    "consumer": {
+        "workers": 4,
+        "blocking": True,
+        "loglevel": logging.INFO,
+    },
+}
+
+if DEBUG:
+    HUEY["immediate_use_memory"] = False
+    HUEY["immediate"] = False
+
+
 ## AUTO_FIELD settings
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-## Cron jobs for maintenance check
-CRONJOBS = [
-    ## Every day at 4:00 a.m maintenance check
-    ("* 4 * * *", "django.core.management.call_command", ["check_maintenance"]),
-]
+# ## Cron jobs for maintenance check
+# CRONJOBS = [
+#     ## Every day at 4:00 a.m maintenance check
+#     ("* 4 * * *", "django.core.management.call_command", ["check_maintenance"]),
+# ]
 
 ## Security settings
 

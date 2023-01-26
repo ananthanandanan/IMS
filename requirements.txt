@@ -8,7 +8,6 @@ django-admin-interface==0.22.1
 django-colorfield==0.7.2
 django-cors-headers==3.13.0
 django-crispy-forms==1.14.0
-django-crontab==0.7.1
 django-easy-select2==1.5.8
 django-environ==0.9.0
 django-filter==22.1
@@ -35,3 +34,6 @@ tzdata==2022.7
 urllib3==1.26.12
 yarg==0.1.9
 psycopg2==2.9.2
+redis==3.5.3
+huey[redis]==2.4.0
+django-environ==0.9.0
