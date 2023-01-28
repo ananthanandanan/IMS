@@ -5,11 +5,12 @@ An Inventory Management System(IMS) is the tool that provides user the ability t
 ## Tech Stack
 
 - Django
-- Docker, Docker Compose
+- Docker, Docker-Compose
 - Postgres
 - Bootstrap/HTML/CSS
-- Redis
-- Huey
+- Redis[Cache]
+- Huey[Task Queue] 
+- Nginx[Reverse Proxy]
 
 ## Features
 
@@ -70,6 +71,8 @@ For removing the docker containers, run the following command
 ```
 
 - This will reset the database, and remove all the docker images and volumes.
+
+- To access the admin panel, go to `http://localhost/admin/` or `http://127.0.0.1/admin/`
 
 ## Development
 

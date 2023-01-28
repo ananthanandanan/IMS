@@ -16,7 +16,7 @@ RUN touch /var/log/cron.log
 # RUN crontab -l | { cat; echo "* * * * * echo 'Hello world' >> /var/log/cron.log 2>&1"; } | crontab -
 
 # Create static and media folders
-RUN mkdir -p /www/app/static && \
+RUN mkdir -p /www/app/staticfiles && \
     mkdir -p /www/app/media
 
 WORKDIR /usr/app

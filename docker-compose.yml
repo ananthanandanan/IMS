@@ -29,17 +29,35 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - .:/usr/app
+      - .:/usr/app:rw
+      - static:/www/app/staticfiles:rw
+      - media:/www/app/media:rw
     ports:
       - "8000:8000"
     depends_on:
       - db
       - redis
     environment:
-      DJANGO_NAME: ${DJANGO_NAME}
-      DJANGO_USER: ${DJANGO_USER}
-      DJANGO_PASSWORD: ${DJANGO_PASSWORD}
+      DJANGO_NAME: ${POSTGRES_DB}
+      DJANGO_USER: ${POSTGRES_USER}
+      DJANGO_PASSWORD: ${POSTGRES_PASSWORD}
 
+    restart: always
+    networks:
+      - main
+  
+  nginx:
+    container_name: nginx_ims
+    build:
+      context: ./nginx/
+    volumes:
+      - static:/home/app/staticfiles:rw
+      - media:/home/app/media:rw
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 80:80
+    depends_on:
+      - web
     restart: always
     networks:
       - main
@@ -54,9 +72,9 @@ services:
     depends_on:
       - redis
     environment:
-      DJANGO_NAME: ${DJANGO_NAME}
-      DJANGO_USER: ${DJANGO_USER}
-      DJANGO_PASSWORD: ${DJANGO_PASSWORD}
+      DJANGO_NAME: ${POSTGRES_DB}
+      DJANGO_USER: ${POSTGRES_USER}
+      DJANGO_PASSWORD: ${POSTGRES_PASSWORD}
     command: python manage.py run_huey
     restart: always
     networks:
@@ -65,5 +83,7 @@ services:
   
 volumes:
   db_data:
+  static:
+  media:
 networks:
   main:

@@ -102,6 +102,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "ims.wsgi.application"
+ASGI_APPLICATION = "ims.asgi.application"
 
 # Database
 
@@ -177,9 +178,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "images")
+# MEDIA_ROOT = os.path.join(BASE_DIR, "images")
 
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+MEDIA_ROOT = "/www/app/media/"
+
+# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+STATIC_ROOT = "/www/app/staticfiles/"
+
 STATIC_URL = "/static/"
 
 STASTATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
