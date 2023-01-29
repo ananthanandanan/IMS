@@ -1,0 +1,16 @@
+{% extends "admin/base_site.html" %}
+{% load static i18n %}
+
+{# Setup favicon #}
+{% block extrahead %}<link rel="shortcut icon" type="image/png" href="{% static 'IMS_logo.png' %}"/>{% endblock %}
+
+{# Setup branding #}
+{% block branding %}
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">
+            <img src="{% static 'IMS_logo.png' %}" alt="IMS" height="50%" width="50%">
+            <br><br>
+            <span style="color: white;"> {% trans "Inventory Management System"  %} </span>
+        </a>
+    </h1>
+{% endblock %}

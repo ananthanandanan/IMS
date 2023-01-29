@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "mathfilters",
     "buildings",
-    "admin_interface",
+    "jet",
+    # "admin_interface",
     "members",
     "colorfield",
     "admin_reorder",
@@ -121,10 +122,8 @@ DATABASES = {
 
 
 ADMIN_REORDER = (
-    {"app": "admin_interface", "label": "Admin Interface"},
-    {"app": "auth", "models": ("auth.User", "auth.Group")},
-    {"app": "members", "label": "Members", "models": ("members.Members",)},
-    {"app": "userlog", "label": "User Log", "models": ("userlog.UserLog",)},
+    # {"app": "admin_interface", "label": "Admin Interface"},
+    # {"app": "auth", "models": ("auth.User", "auth.Group")},
     {
         "app": "buildings",
         "label": "Buildings",
@@ -143,6 +142,8 @@ ADMIN_REORDER = (
             "buildings.Assignee",
         ),
     },
+    {"app": "members", "label": "Members", "models": ("members.Members",)},
+    {"app": "userlog", "label": "User Log", "models": ("userlog.UserLog",)},
 )
 # Password validation
 
@@ -235,3 +236,51 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     X_FRAME_OPTIONS = "DENY"
     ALLOWED_HOSTS = ["*"]
+
+# Jet config
+JET_SIDE_MENU_ITEMS = [  # A list of application or custom item dicts
+    {
+        "label": "Buildings",
+        "items": [
+            {"name": "buildings.department"},
+            {"name": "buildings.building"},
+            {"name": "buildings.block"},
+            {"name": "buildings.floor"},
+            {"name": "buildings.roomtype"},
+            {"name": "buildings.room"},
+            {"name": "buildings.item"},
+            {"name": "buildings.maintenance"},
+            {"name": "buildings.ticket"},
+            {"name": "buildings.activity"},
+            {"name": "buildings.itemswap"},
+            {"name": "buildings.assignee"},
+        ],
+    },
+    {
+        "label": "Members",
+        "items": [
+            {"name": "members.members"},
+        ],
+    },
+    {
+        "label": "User Log",
+        "items": [
+            {"name": "userlog.userlog"},
+        ],
+    },
+]
+
+JET_SIDE_MENU_COMPACT = True
+JET_CHANGE_FORM_SIBLING_LINKS = True
+JET_THEMES = [
+    {
+        "theme": "default",  # theme folder name
+        "color": "#47bac1",  # color of the theme's button in user menu
+        "title": "Default",  # theme title
+    },
+    {"theme": "green", "color": "#44b78b", "title": "Green"},
+    {"theme": "light-green", "color": "#2faa60", "title": "Light Green"},
+    {"theme": "light-violet", "color": "#a464c4", "title": "Light Violet"},
+    {"theme": "light-blue", "color": "#5EADDE", "title": "Light Blue"},
+    {"theme": "light-gray", "color": "#222", "title": "Light Gray"},
+]
