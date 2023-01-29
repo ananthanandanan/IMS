@@ -29,9 +29,15 @@ SECRET_KEY = env.str(
 
 DEBUG = env.bool("DEBUG", default=True)
 
-ALLOWED_HOSTS = [
-    "*"
-]  # in production, this should be the domain name of the server or the IP address of the server
+## Production Settings
+ALLOWED_HOSTS = [".ec2-100-25-23-120.compute-1.amazonaws.com"]
+
+## Development Settings
+if DEBUG:
+    ALLOWED_HOSTS += [".localhost", "127.0.0.1", "[::1]", "web:8000"]
+    ALLOWED_HOSTS = ["*"]
+
+
 AUTH_USER_MODEL = "members.Members"
 CORS_ALLOW_ALL_ORIGINS = True  # in production, this should be False
 
@@ -43,7 +49,6 @@ INSTALLED_APPS = [
     "mathfilters",
     "buildings",
     "jet",
-    # "admin_interface",
     "members",
     "colorfield",
     "admin_reorder",
@@ -216,26 +221,29 @@ if DEBUG:
 ## AUTO_FIELD settings
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# ## Cron jobs for maintenance check
-# CRONJOBS = [
-#     ## Every day at 4:00 a.m maintenance check
-#     ("* 4 * * *", "django.core.management.call_command", ["check_maintenance"]),
-# ]
-
 ## Security settings
+# TODO: Uncomment these when in production with https enabled ssl cert
+# is installed and domain is configured properly
 
 if not DEBUG:
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    # SECURE_SSL_REDIRECT = True
+    # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    SECURE_HSTS_SECONDS = 31536000  # 1 year
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_BROWSER_XSS_FILTER = True
-    X_FRAME_OPTIONS = "DENY"
-    ALLOWED_HOSTS = ["*"]
+    # SECURE_HSTS_SECONDS = 31536000  # 1 year
+    # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    # SECURE_HSTS_PRELOAD = True
+    # SECURE_CONTENT_TYPE_NOSNIFF = True
+    # SECURE_BROWSER_XSS_FILTER = True
+    # X_FRAME_OPTIONS = "DENY"
+    # ALLOWED_HOSTS = ["*"]
+else:
+    SECURE_PROXY_SSL_HEADER = None
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    SECURE_HSTS_SECONDS = None
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
 
 # Jet config
 JET_SIDE_MENU_ITEMS = [  # A list of application or custom item dicts

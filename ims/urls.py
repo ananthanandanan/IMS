@@ -22,7 +22,7 @@ from members import views
 # from buildings.views import ArticleView
 
 urlpatterns = [
-    path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
+    path("jet/", include("jet.urls", "jet")),  # Django JET URLS
     path("admin/", admin.site.urls),
     path("building/", include("buildings.urls")),
     path(

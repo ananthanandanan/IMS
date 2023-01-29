@@ -54,6 +54,7 @@ services:
       - static:/home/app/staticfiles:rw
       - media:/home/app/media:rw
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      # - ./nginx/nginx.prod.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 80:80
     depends_on:
