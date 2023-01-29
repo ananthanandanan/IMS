@@ -228,8 +228,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 if not DEBUG:
     # SECURE_SSL_REDIRECT = True
     # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = False  # Change to True when in production with https
+    CSRF_COOKIE_SECURE = False  # Change to True when in production with https
+    SESSION_COOKIE_HTTPONLY = False  # Change to True when in production with https
+    CSRF_TRUSTED_ORIGINS = [
+        "http://ec2-100-25-23-120.compute-1.amazonaws.com",
+        "http://www.ec2-100-25-23-120.compute-1.amazonaws.com",
+    ]
     # SECURE_HSTS_SECONDS = 31536000  # 1 year
     # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     # SECURE_HSTS_PRELOAD = True
