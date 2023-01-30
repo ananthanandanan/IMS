@@ -58,7 +58,7 @@ class roomsAdmin(admin.ModelAdmin):
         "floor__block__building",
     )
     raw_id_fields = ("floor",)
-    search_fields = ("room_no", "room_type")
+    search_fields = ("room_no",)
     inlines = [RoomItemInline]
     roomtype_select = select2_modelform(Room, attrs={"width": "250px"})
     form = roomtype_select
