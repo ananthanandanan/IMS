@@ -23,7 +23,7 @@ from members import views
 
 urlpatterns = [
     path("jet/", include("jet.urls", "jet")),  # Django JET URLS
-    path("", admin.site.urls),
+    path("admin/", admin.site.urls),
     path("building/", include("buildings.urls")),
     path(
         "members/", include("django.contrib.auth.urls")

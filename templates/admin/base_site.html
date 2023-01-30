@@ -13,4 +13,12 @@
             <span style="color: white;"> {% trans "Inventory Management System"  %} </span>
         </a>
     </h1>
+{% block navigation %}
+<div style="padding-top: 20px;">
+    <ul class="navigation" style="float: left;">
+      <li class="custom-li" style="list-style: none; float: left;"><a href="{% url 'report' %}" style="color: lightgray !important;">
+        Report Dashboard</a></li>
+    </ul>
+  </div>
+{% endblock %}
 {% endblock %}
