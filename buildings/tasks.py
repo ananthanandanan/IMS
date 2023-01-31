@@ -3,7 +3,8 @@ from huey.contrib.djhuey import db_periodic_task
 
 from buildings.models import *
 import datetime
-
+import os
+from django.core.management import call_command
 
 ## Set the task to run every day at 4:00 AM.
 @db_periodic_task(crontab(minute=0, hour=4))
@@ -145,3 +146,19 @@ def maintenance_task():
             pass
     except maintenances is None:
         pass
+
+
+# backup database in json file each monday at 12:00 AM
+@db_periodic_task(crontab(minute=0, hour=0, day_of_week=1))
+def backup_database():
+    timestamp = datetime.datetime.now()
+    if not os.path.exists("backups"):
+        os.makedirs("backups")
+    call_command(
+        "dumpdata",
+        "--exclude",
+        "auth.permission",
+        "--exclude",
+        "contenttypes",
+        output=f"backups/backup_{timestamp.day}_{timestamp.month}_{timestamp.year}.json",
+    )
