@@ -117,10 +117,10 @@ ASGI_APPLICATION = "ims.asgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env.str("DJANGO_NAME", default=""),
-        "USER": env.str("DJANGO_USER", default=""),
-        "PASSWORD": env.str("DJANGO_PASSWORD", default=""),
-        "HOST": "db",
+        "NAME": env.str("DJANGO_NAME", default="postgres"),
+        "USER": env.str("DJANGO_USER", default="postgres"),
+        "PASSWORD": env.str("DJANGO_PASSWORD", default="postgres"),
+        "HOST": env.str("DJANGO_HOST", default="postgres"),
         "PORT": "5432",
     }
 }

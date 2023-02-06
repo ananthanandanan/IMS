@@ -42,6 +42,7 @@ services:
       DJANGO_NAME: ${POSTGRES_DB}
       DJANGO_USER: ${POSTGRES_USER}
       DJANGO_PASSWORD: ${POSTGRES_PASSWORD}
+      DJANGO_HOST: ${POSTGRES_HOST}
 
     restart: always
     networks:
