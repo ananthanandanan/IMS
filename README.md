@@ -8,7 +8,7 @@ An Inventory Management System(IMS) is the tool that provides user the ability t
 - Docker, Docker-Compose
 - Postgres
 - Bootstrap/HTML/CSS
-- Redis[Cache]
+- Redis[Cache and Task Queue]
 - Huey[Task Queue] 
 - Nginx[Reverse Proxy]
 - Graphene[GraphQL API]
@@ -46,9 +46,7 @@ SECRET_KEY=secret
 POSTGRES_DB=postgres
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
-DJANGO_NAME=postgres
-DJANGO_USER=postgres
-DJANGO_PASSWORD=postgres
+POSTGRES_HOST=db
 ```
 
 ## Docker Setup
@@ -74,16 +72,17 @@ For removing the docker containers, run the following command
 - This will reset the database, and remove all the docker images and volumes.
 
 - To access the admin panel, go to `http://localhost/admin/` or `http://127.0.0.1/admin/`
+- To access the graphql endpoint, go to `http://localhost/api/` or `http://127.0.0.1/api/`
 
 ## Development
 
 - For creating new features, create new branch locally and work on it.
 - After testing the feature, create a PR.
-- To fetch new changes
+- To fetch new changes and update the main branch, run the following commands
 
 ```bash
     $ git fetch upstream
-    $ git rebase upstream/master
+    $ git rebase upstream/main
 ```
 
 ## Formatting
