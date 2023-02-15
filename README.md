@@ -11,6 +11,7 @@ An Inventory Management System(IMS) is the tool that provides user the ability t
 - Redis[Cache]
 - Huey[Task Queue] 
 - Nginx[Reverse Proxy]
+- Graphene[GraphQL API]
 
 ## Features
 

@@ -18,6 +18,8 @@ from django.conf import settings
 from django.urls import path, include
 from django.conf.urls.static import static
 from members import views
+from django.views.decorators.csrf import csrf_exempt
+from graphene_django.views import GraphQLView
 
 # from buildings.views import ArticleView
 
@@ -34,6 +36,7 @@ urlpatterns = [
     path("buildingWise_api", views.buildingAPI.as_view()),
     path("itemWise_api", views.departmentPriceAPI.as_view()),
     path("itemPrice_api", views.itemPriceAPI.as_view()),
+    path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True))),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

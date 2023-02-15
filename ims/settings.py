@@ -15,6 +15,7 @@ import logging
 
 from collections import OrderedDict
 import environ
+from datetime import timedelta
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -63,6 +64,7 @@ INSTALLED_APPS = [
     "django_filters",
     "crispy_forms",
     "userlog",
+    "graphene_django",  # <--- graphene for graphql
 ]
 APP_ORDER = [
     ("Buildings"),
@@ -125,6 +127,26 @@ DATABASES = {
     }
 }
 
+## Graphene Settings
+GRAPHENE = {
+    "SCHEMA": "ims.graphql.schema.schema",
+    "MIDDLEWARE": [
+        "graphql_jwt.middleware.JSONWebTokenMiddleware",
+    ],
+}
+
+##  JWT Settings
+AUTHENTICATION_BACKENDS = [
+    "graphql_jwt.backends.JSONWebTokenBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+## Graphql JWT Settings
+GRAPHQL_JWT = {
+    "JWT_VERIFY_EXPIRATION": True,
+    "JWT_EXPIRATION_DELTA": timedelta(minutes=5),
+    "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=7),
+}
 
 ADMIN_REORDER = (
     # {"app": "admin_interface", "label": "Admin Interface"},
